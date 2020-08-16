@@ -35,10 +35,11 @@ class AuthRegisterTest extends TestCase
     public function a_user_can_register()
     {
         $password = 'Testing123!#';
+        $email = 'john@testing.com';
 
         $response = $this->post('/register', [
             'name' => 'John Doe',
-            'email' => 'john@testing.com',
+            'email' => $email,
             'password' => $password,
             'password_confirmation' => $password,
         ]);
@@ -46,10 +47,33 @@ class AuthRegisterTest extends TestCase
         $this->assertCount(1, $users = User::all());
         $this->assertAuthenticatedAs($user = $users->first());
         $this->assertEquals('John Doe', $user->name);
-        $this->assertEquals('john@testing.com', $user->email);
+        $this->assertEquals($email, $user->email);
         $this->assertTrue(Hash::check($password, $user->password));
 
         $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
+
+
+    /** @test */
+    public function a_user_cannot_register_with_invalid_email()
+    {
+        $password = 'Testing123!#';
+        $email = 'john@example.com';
+
+        $response = $this->from('/register')->post('/register', [
+            'name' => 'John Doe',
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ]);
+
+        $this->assertCount(0, $users = User::all());
+        $response->assertRedirect('/register');
+        $response->assertSessionHasErrors('email');
+        $this->assertTrue(session()->hasOldInput('name'));
+        $this->assertTrue(session()->hasOldInput('email'));
+        $this->assertFalse(session()->hasOldInput('password'));
+        $this->assertGuest();
+    }
 }
