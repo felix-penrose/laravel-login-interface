@@ -11,3 +11,9 @@ User login
 
 User reset password
 - password/reset
+
+User can edit their details
+- user/{id}/edit
+
+User can close account
+- (DELETE) - user/{id}

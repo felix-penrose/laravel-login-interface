@@ -11,5 +11,19 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix
+    .extract([
+        'jquery',
+        'bootstrap',
+        'vue',
+        'axios',
+    ], 'public/js/vendor.js')
+
+    .js('resources/js/app.js', 'public/js')
+
+    .sass('resources/sass/app.scss', 'public/css')
+
+    .version()
+    .autoload({
+        'moment': ['moment','window.moment'],
+    });
