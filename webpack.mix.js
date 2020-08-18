@@ -20,8 +20,10 @@ mix
     ], 'public/js/vendor.js')
 
     .js('resources/js/app.js', 'public/js')
+    .js('resources/js/profile.js', 'public/js')
 
     .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/profile.scss', 'public/css')
 
     .version()
     .autoload({
