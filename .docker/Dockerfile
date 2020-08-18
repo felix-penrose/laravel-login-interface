@@ -9,6 +9,7 @@ RUN apt-get install -y \
     curl \
     sudo \
     unzip \
+    sendmail \
     libicu-dev \
     libbz2-dev \
     libzip-dev \
@@ -18,6 +19,8 @@ RUN apt-get install -y \
     libreadline-dev \
     libfreetype6-dev \
     g++
+
+ADD .docker/docker-script-etc-hosts.sh /home/docker-script-etc-hosts.sh
 
 # 2. apache configs + document root
 COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
