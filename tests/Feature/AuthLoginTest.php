@@ -90,7 +90,7 @@ class AuthLoginTest extends TestCase
             'remember' => 'on',
         ]);
 
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect(RouteServiceProvider::PROFILE);
 
         // check the cookie is valid
         $response->assertCookie(Auth::guard()->getRecallerName(), vsprintf('%s|%s|%s', [

@@ -31,9 +31,5 @@ Auth::routes();
 // Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'IndexController@index')->name('front_page');
+Route::get('/profile', 'ProfileController@index')->name('home');

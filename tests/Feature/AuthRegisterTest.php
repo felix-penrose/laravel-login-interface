@@ -50,7 +50,7 @@ class AuthRegisterTest extends TestCase
         $this->assertEquals($email, $user->email);
         $this->assertTrue(Hash::check($password, $user->password));
 
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect(RouteServiceProvider::PROFILE);
     }
 
 
