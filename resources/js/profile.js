@@ -30,6 +30,9 @@ const store = new Vuex.Store({
 });
 
 
+const api_url = '/u/profile';
+
+
 new Vue({
     el: '#app',
     store,
@@ -69,16 +72,23 @@ new Vue({
         get_user() {
 
             // make ajax call
-            // set global user object
-            this.set_user({
-                first_name: 'test',
-                last_name: 'test',
-                email: 'test@test.com',
-                username: '',
-                personal_site: '',
-                location: '',
-                instagram_username: '',
-                twitter_username: '',
+            axios.get(api_url)
+            .then(r => {
+                r= r.data;
+
+                console.log(r);
+
+                // set global user object
+                this.set_user({
+                    first_name: r.first_name,
+                    last_name: r.last_name,
+                    email: r.email,
+                    username: r.username,
+                    personal_site: r.personal_site,
+                    location: r.location,
+                    instagram_username: r.instagram_username,
+                    twitter_username: r.twitter_username,
+                });
             });
 
         },
