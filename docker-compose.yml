@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  el_login_interface:
+    build:
+      context: '.'
+      dockerfile: .docker/Dockerfile
+      args:
+        uid: ${UID}
+    container_name: el_login_interface
+    environment:
+      - APACHE_RUN_USER=#${UID}
+      - APACHE_RUN_GROUP=#${UID}
+    volumes:
+      - .:/var/www
+    ports:
+      - 80:80
+    networks:
+      backend:
+        aliases:
+          - el_login_interface
+
+networks:
+  backend:
+    name: backend-network
