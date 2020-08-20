@@ -36,3 +36,4 @@ Route::get('/profile', 'ProfileController@index')->name('profile');
 
 Route::get('/u/profile', 'ProfileController@fetch')->name('profile.fetch');
 Route::put('/u/profile', 'ProfileController@update')->name('profile.update');
+Route::delete('/u/profile', 'ProfileController@delete')->name('profile.delete');

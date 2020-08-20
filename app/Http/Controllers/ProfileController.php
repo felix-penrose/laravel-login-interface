@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller
 {
@@ -45,7 +47,7 @@ class ProfileController extends Controller
     /**
      * Return the authenticated user
      *
-     * @return json
+     * @return JsonResponse
      */
     public function update(ProfileUpdateRequest $request)
     {
@@ -55,5 +57,23 @@ class ProfileController extends Controller
         $user->fill($validated_data)->save();
 
         return response()->json($user);
+    }
+
+
+
+    /**
+     * Logout and delete the currently authenticated user
+     *
+     * @return Redirect
+     */
+    public function delete()
+    {
+        $user = Auth::user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        return redirect(route('front_page'));
     }
 }

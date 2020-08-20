@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,20 +13,22 @@ class ProfileUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $base_url = '/u/profile';
+
+
     /** @test */
     public function a_logged_in_user_can_fetch_details()
     {
         $user = $this->log_in_user();
 
         // fetch user detals after login
-        $response = $this->getJson('/u/profile');
+        $response = $this->getJson($this->base_url);
 
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'first_name' => $user->first_name,
-                'email' => $user->email,
-            ]);
+        $response->assertStatus(200);
+        $response->assertJson([
+            'first_name' => $user->first_name,
+            'email' => $user->email,
+        ]);
     }
 
 
@@ -46,11 +49,10 @@ class ProfileUpdateTest extends TestCase
             'twitter_username' => 'TWTester',
         ];
 
-        $response = $this->putJson('/u/profile', $user_update);
+        $response = $this->putJson($this->base_url, $user_update);
 
-        $response
-            ->assertStatus(200)
-            ->assertJson($user_update);
+        $response->assertStatus(200);
+        $response->assertJson($user_update);
 
         $this->assertNotEquals($user->first_name, $response['first_name']);
         $this->assertNotEquals($user->last_name, $response['last_name']);
@@ -64,6 +66,28 @@ class ProfileUpdateTest extends TestCase
 
 
 
+
+    /** @test */
+    public function a_user_can_delete_their_account()
+    {
+        $user = $this->log_in_user();
+
+        $response = $this->deleteJson($this->base_url);
+
+        // dump(User::all());
+
+        $this->assertCount(0, User::all());
+        $response->assertRedirect('/');
+        $this->assertGuest();
+    }
+
+
+
+    /**
+     * Log in a user, so we can perform actions when authenticated
+     *
+     * @return collection
+     */
     public function log_in_user()
     {
         $user = factory(User::class)->create([
