@@ -9,17 +9,22 @@
     </div>
 
     <input
-        type="text"
+        :type="type || 'text'"
         :id="id"
         class="form-control"
+        :class="(get_error() && 'is-invalid')"
         :value="value"
         :aria-label="placeholder"
         :placeholder="placeholder"
-        @input="$emit('update-value', { id, value: $event.target.value });"
+        @input="handle_input"
     >
 
     <div v-if="append" class="input-group-append">
         <span class="input-group-text">{{ append }}</span>
+    </div>
+
+    <div v-if="get_error()" class="invalid-feedback">
+        {{ get_error() }}
     </div>
 </div>
 
@@ -28,10 +33,10 @@
 
 <script>
     export default {
-
         name: 'InputText',
         props: [
             'id',
+            'type',
             'label',
             'value',
             'prepend',
@@ -39,5 +44,18 @@
             'placeholder',
         ],
 
+        methods: {
+
+            get_error() {
+                return this.$store.state.field_errors && this.$store.state.field_errors[this.$props.id] && this.$store.state.field_errors[this.$props.id][0];
+            },
+
+            handle_input(e) {
+
+                this.$emit('update-store-value', { id: this.$props.id, value: e.target.value });
+
+                this.$emit('input', e.target.value);
+            }
+        },
     }
 </script>

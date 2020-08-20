@@ -21,7 +21,9 @@ class AddColumnsToUsersTable extends Migration
             $table->string('location')->nullable();
             $table->string('instagram_username')->nullable();
             $table->string('twitter_username')->nullable();
+        });
 
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('name');
         });
     }
@@ -34,8 +36,6 @@ class AddColumnsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->nullable();
-
             $table->dropColumn('first_name');
             $table->dropColumn('last_name');
             $table->dropColumn('username');
@@ -43,6 +43,10 @@ class AddColumnsToUsersTable extends Migration
             $table->dropColumn('location');
             $table->dropColumn('instagram_username');
             $table->dropColumn('twitter_username');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('name')->nullable();
         });
     }
 }

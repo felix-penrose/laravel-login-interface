@@ -20,7 +20,7 @@ class AuthRegisterTest extends TestCase
         $response = $this->get('/register');
 
         $response->assertSeeInOrder([
-            'Name',
+            'First Name',
             'E-Mail Address',
             'Password',
             'Confirm Password',
@@ -38,7 +38,7 @@ class AuthRegisterTest extends TestCase
         $email = 'john@testing.com';
 
         $response = $this->post('/register', [
-            'name' => 'John Doe',
+            'first_name' => 'John',
             'email' => $email,
             'password' => $password,
             'password_confirmation' => $password,
@@ -46,7 +46,7 @@ class AuthRegisterTest extends TestCase
 
         $this->assertCount(1, $users = User::all());
         $this->assertAuthenticatedAs($user = $users->first());
-        $this->assertEquals('John Doe', $user->name);
+        $this->assertEquals('John', $user->first_name);
         $this->assertEquals($email, $user->email);
         $this->assertTrue(Hash::check($password, $user->password));
 
@@ -62,18 +62,17 @@ class AuthRegisterTest extends TestCase
         $email = 'john@example.com';
 
         $response = $this->from('/register')->post('/register', [
-            'name' => 'John Doe',
+            'first_name' => 'John',
             'email' => $email,
             'password' => $password,
             'password_confirmation' => $password,
         ]);
 
-        $this->assertCount(0, $users = User::all());
+        $this->assertCount(0, User::all());
         $response->assertRedirect('/register');
         $response->assertSessionHasErrors('email');
-        $this->assertTrue(session()->hasOldInput('name'));
+        $this->assertTrue(session()->hasOldInput('first_name'));
         $this->assertTrue(session()->hasOldInput('email'));
-        $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
 }

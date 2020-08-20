@@ -36,8 +36,9 @@ class AuthLoginTest extends TestCase
 
         $response = $this->actingAs($user)->get('/login');
 
-        $response->assertRedirect('/home');
+        $response->assertRedirect(RouteServiceProvider::PROFILE);
     }
+
 
     /** @test */
     public function user_can_login_with_correct_credentials()
@@ -51,7 +52,7 @@ class AuthLoginTest extends TestCase
             'password' => $password,
         ]);
 
-        $response->assertRedirect('/home');
+        $response->assertRedirect(RouteServiceProvider::PROFILE);
         $this->assertAuthenticatedAs($user);
     }
 
