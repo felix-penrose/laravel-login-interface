@@ -14,6 +14,7 @@ class ProfileUpdateTest extends TestCase
     use RefreshDatabase;
 
     public $base_url = '/u/profile';
+    public $test_password = 'testing';
 
 
     /** @test */
@@ -72,12 +73,10 @@ class ProfileUpdateTest extends TestCase
     {
         $user = $this->log_in_user();
 
-        $response = $this->deleteJson($this->base_url);
+        $response = $this->deleteJson($this->base_url, ['current_password' => $this->test_password]);
 
-        // dump(User::all());
-
+        $this->assertEquals($response['redirect'], route('front_page'));
         $this->assertCount(0, User::all());
-        $response->assertRedirect('/');
         $this->assertGuest();
     }
 
@@ -91,12 +90,12 @@ class ProfileUpdateTest extends TestCase
     public function log_in_user()
     {
         $user = factory(User::class)->create([
-            'password' => bcrypt($password = 'testing'),
+            'password' => bcrypt($this->test_password),
         ]);
 
         $this->post('/login', [
             'email' => $user->email,
-            'password' => $password,
+            'password' => $this->test_password,
         ]);
 
         return $user;

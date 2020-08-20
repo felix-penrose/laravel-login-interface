@@ -27,19 +27,9 @@
                 :processing="processing"
             ></edit-profile>
 
-            <email-settings
-                v-if="current_tab == 'email-settings'"
-                v-on:update-user="update_user"
-            ></email-settings>
-
-            <change-password
-                v-if="current_tab == 'change-password'"
-                v-on:update-user="update_user"
-            ></change-password>
-
             <close-account
                 v-if="current_tab == 'close-account'"
-                v-on:update-user="update_user"
+                end_point="{{ route('profile.delete') }}"
             ></close-account>
 
         </div>

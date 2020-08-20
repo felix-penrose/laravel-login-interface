@@ -5,8 +5,6 @@ import FlashMessage from './components/FlashMessage.vue';
 import SideBar from './components/profile/SideBar.vue';
 
 import EditProfile from './components/profile/EditProfile.vue';
-import EmailSettings from './components/profile/EmailSettings.vue';
-import ChangePassword from './components/profile/ChangePassword.vue';
 import CloseAccount from './components/profile/CloseAccount.vue';
 
 Vue.use(Vuex);
@@ -57,8 +55,6 @@ new Vue({
 
         // central sections
         EditProfile,
-        EmailSettings,
-        ChangePassword,
         CloseAccount,
     },
 
@@ -81,6 +77,9 @@ new Vue({
             } else if (window.location.hash) {
                 this.current_tab = window.location.hash.substring(1);
             }
+
+            this.$store.commit('set_flash_message', null);
+            this.$store.commit('set_field_errors', null);
         },
 
 
@@ -145,7 +144,7 @@ new Vue({
                 let errors = error.response.data.errors;
 
                 this.$store.commit('set_field_errors', errors);
-                this.$store.commit('set_flash_message', { class: 'danger', message: error });
+                this.$store.commit('set_flash_message', { class: 'danger', message: error.response.data.message });
 
             }).then(() => {
                 // note we're not processing any more

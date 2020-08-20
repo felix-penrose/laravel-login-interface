@@ -42,6 +42,6 @@ class InstagramUsername implements Rule
      */
     public function message()
     {
-        return "The :attribute doesn't appear to be a valid username";
+        return "The :attribute doesn't appear to be valid";
     }
 }

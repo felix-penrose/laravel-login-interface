@@ -12,22 +12,22 @@
             <InputText
                 id="first_name"
                 label="First name"
-                :value="this.$store.state.user.first_name"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.first_name"
+                v-on:update-store-value="update_value"
             />
 
             <InputText
                 id="last_name"
                 label="Last name"
-                :value="this.$store.state.user.last_name"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.last_name"
+                v-on:update-store-value="update_value"
             />
 
             <InputText
                 id="email"
                 label="Email address"
-                :value="this.$store.state.user.email"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.email"
+                v-on:update-store-value="update_value"
             />
         </div>
     </div>
@@ -37,8 +37,8 @@
             <InputText
                 id="username"
                 label="Username"
-                :value="this.$store.state.user.username"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.username"
+                v-on:update-store-value="update_value"
             />
         </div>
     </div>
@@ -48,16 +48,16 @@
             <InputText
                 id="personal_site"
                 label="Personal Site"
-                :value="this.$store.state.user.personal_site"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.personal_site"
+                v-on:update-store-value="update_value"
             />
 
             <InputText
                 id="instagram_username"
                 label="Instagram username"
                 prepend="@"
-                :value="this.$store.state.user.instagram_username"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.instagram_username"
+                v-on:update-store-value="update_value"
             />
         </div>
 
@@ -65,16 +65,16 @@
             <InputText
                 id="location"
                 label="Location"
-                :value="this.$store.state.user.location"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.location"
+                v-on:update-store-value="update_value"
             />
 
             <InputText
                 id="twitter_username"
                 label="Twitter username"
                 prepend="@"
-                :value="this.$store.state.user.twitter_username"
-                v-on:update-value="update_value"
+                v-model="this.$store.state.user.twitter_username"
+                v-on:update-store-value="update_value"
             />
         </div>
     </div>
@@ -110,7 +110,7 @@
 
             update_value(data) {
                 this.$store.commit('update_user_key', data);
-            }
-        }
+            },
+        },
     }
 </script>

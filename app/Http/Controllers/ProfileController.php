@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteAccountRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -66,7 +67,7 @@ class ProfileController extends Controller
      *
      * @return Redirect
      */
-    public function delete()
+    public function delete(DeleteAccountRequest $request)
     {
         $user = Auth::user();
 
@@ -74,6 +75,8 @@ class ProfileController extends Controller
 
         $user->delete();
 
-        return redirect(route('front_page'));
+        return response()->json([
+            'redirect' => route('front_page')
+        ]);
     }
 }
