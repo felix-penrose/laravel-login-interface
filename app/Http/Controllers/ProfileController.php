@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -24,5 +26,18 @@ class ProfileController extends Controller
     public function index()
     {
         return view('profile');
+    }
+
+
+    /**
+     * Return the authenticated user
+     *
+     * @return json
+     */
+    public function ajax_index()
+    {
+        $user = Auth::user();
+
+        return response()->json($user);
     }
 }

@@ -31,17 +31,7 @@
 
 <script>
     export default {
-
         props: ['current_tab'],
-
         name: 'SideBar',
-
-        mounted() {
-
-        },
-
-        methods: {
-
-        },
     }
 </script>

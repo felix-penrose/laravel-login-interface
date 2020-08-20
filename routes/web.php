@@ -33,3 +33,5 @@ Auth::routes();
 
 Route::get('/', 'IndexController@index')->name('front_page');
 Route::get('/profile', 'ProfileController@index')->name('home');
+
+Route::get('/u/profile', 'ProfileController@ajax_index')->name('home');
