@@ -32,6 +32,7 @@ Auth::routes();
 
 
 Route::get('/', 'IndexController@index')->name('front_page');
-Route::get('/profile', 'ProfileController@index')->name('home');
+Route::get('/profile', 'ProfileController@index')->name('profile');
 
-Route::get('/u/profile', 'ProfileController@ajax_index')->name('home');
+Route::get('/u/profile', 'ProfileController@fetch')->name('profile.fetch');
+Route::put('/u/profile', 'ProfileController@update')->name('profile.update');

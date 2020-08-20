@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -17,6 +16,7 @@ class ProfileController extends Controller
     {
         $this->middleware('auth');
     }
+
 
     /**
      * Show the application dashboard.
@@ -34,9 +34,25 @@ class ProfileController extends Controller
      *
      * @return json
      */
-    public function ajax_index()
+    public function fetch()
     {
         $user = Auth::user();
+
+        return response()->json($user);
+    }
+
+
+    /**
+     * Return the authenticated user
+     *
+     * @return json
+     */
+    public function update(ProfileUpdateRequest $request)
+    {
+        $validated_data = $request->validated();
+
+        $user = Auth::user();
+        $user->fill($validated_data)->save();
 
         return response()->json($user);
     }

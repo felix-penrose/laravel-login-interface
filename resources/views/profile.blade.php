@@ -16,24 +16,30 @@
 
         <div class="col-12 col-sm-8 col-lg-9">
 
+            <flash-message
+                v-if="this.$store.state.flash_message"
+                :class_name="this.$store.state.flash_message.class"
+            >@{{ this.$store.state.flash_message.message }}</flash-message>
+
             <edit-profile
                 v-if="current_tab == 'edit-profile'"
-                v-on:set-user="set_user"
+                v-on:update-user="update_user"
+                :processing="processing"
             ></edit-profile>
 
             <email-settings
                 v-if="current_tab == 'email-settings'"
-                v-on:set-user="set_user"
+                v-on:update-user="update_user"
             ></email-settings>
 
             <change-password
                 v-if="current_tab == 'change-password'"
-                v-on:set-user="set_user"
+                v-on:update-user="update_user"
             ></change-password>
 
             <close-account
                 v-if="current_tab == 'close-account'"
-                v-on:set-user="set_user"
+                v-on:update-user="update_user"
             ></close-account>
 
         </div>

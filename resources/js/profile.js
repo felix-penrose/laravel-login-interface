@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import FlashMessage from './components/FlashMessage.vue';
 import SideBar from './components/profile/SideBar.vue';
 
 import EditProfile from './components/profile/EditProfile.vue';
@@ -14,6 +15,8 @@ const store = new Vuex.Store({
 
     state: {
         user: {},
+        flash_message: null,
+        field_errors: null,
     },
 
     mutations: {
@@ -22,9 +25,15 @@ const store = new Vuex.Store({
         },
 
         update_user_key(state, data) {
-
-            console.log([data]);
             state.user[data.id] = data.value;
+        },
+
+        set_flash_message(state, data) {
+            state.flash_message = data;
+        },
+
+        set_field_errors(state, errors) {
+            state.field_errors = errors;
         }
     }
 });
@@ -39,9 +48,11 @@ new Vue({
 
     data: {
         current_tab: 'edit-profile',
+        processing: false,
     },
 
     components: {
+        FlashMessage,
         SideBar,
 
         // central sections
@@ -53,13 +64,18 @@ new Vue({
 
     mounted() {
         this.set_tab();
-        this.get_user();
+        this.fetch_user();
     },
+
 
     methods: {
 
-        set_tab(tab) {
+        set_user(user) {
+            this.$store.commit('update', user);
+        },
 
+
+        set_tab(tab) {
             if (tab) {
                 this.current_tab = tab;
             } else if (window.location.hash) {
@@ -68,15 +84,13 @@ new Vue({
         },
 
 
-
-        get_user() {
+        fetch_user() {
+            this.processing = true;
 
             // make ajax call
             axios.get(api_url)
             .then(r => {
-                r= r.data;
-
-                console.log(r);
+                r = r.data;
 
                 // set global user object
                 this.set_user({
@@ -89,15 +103,54 @@ new Vue({
                     instagram_username: r.instagram_username,
                     twitter_username: r.twitter_username,
                 });
-            });
 
+            }).catch(error => {
+
+                this.$store.commit('set_flash_message', { class: 'danger', message: error });
+
+            }).then(() => {
+                // note we're not processing any more
+                this.processing = false;
+            });
         },
 
 
-        set_user(user) {
+        update_user(section) {
 
-            this.$store.commit('update', user);
-        }
+            this.processing = true;
 
+            let end_point;
+
+            switch (section) {
+                case 'edit_profile': end_point = api_url; break;
+                case 'email_settings': end_point = api_url + '/email-settings'; break;
+                case 'change_password': end_point = api_url + '/password'; break;
+
+                default: end_point = api_url;
+            }
+
+            axios.put(end_point, this.$store.state.user)
+            .then(r => {
+                r = r.data;
+
+                this.$store.commit('set_field_errors', null);
+                this.$store.commit('set_flash_message', { class: 'success', message: 'Profile successfully updated' });
+
+                // hide the message after a few seconds
+                setTimeout(() => {
+                    this.$store.commit('set_flash_message', null);
+                }, 3000);
+
+            }).catch(error => {
+                let errors = error.response.data.errors;
+
+                this.$store.commit('set_field_errors', errors);
+                this.$store.commit('set_flash_message', { class: 'danger', message: error });
+
+            }).then(() => {
+                // note we're not processing any more
+                this.processing = false;
+            });
+        },
     }
 });

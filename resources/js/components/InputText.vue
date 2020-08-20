@@ -12,6 +12,7 @@
         type="text"
         :id="id"
         class="form-control"
+        :class="(get_error(id) && 'is-invalid')"
         :value="value"
         :aria-label="placeholder"
         :placeholder="placeholder"
@@ -21,6 +22,10 @@
     <div v-if="append" class="input-group-append">
         <span class="input-group-text">{{ append }}</span>
     </div>
+
+    <div v-if="get_error(id)" class="invalid-feedback">
+        {{ get_error(id) }}
+    </div>
 </div>
 
 </div>
@@ -28,7 +33,6 @@
 
 <script>
     export default {
-
         name: 'InputText',
         props: [
             'id',
@@ -39,5 +43,11 @@
             'placeholder',
         ],
 
+        methods: {
+
+            get_error(id) {
+                return this.$store.state.field_errors && this.$store.state.field_errors[id] && this.$store.state.field_errors[id][0];
+            }
+        },
     }
 </script>

@@ -81,7 +81,12 @@
 
     <div class="row">
         <div class="col-12 col-md-6 mt-5">
-            <button type="button" class="btn btn-primary btn-lg btn-block" @click="$emit('set-user')">Update Account</button>
+            <button
+                type="button"
+                class="btn btn-primary btn-lg btn-block"
+                :disabled="processing"
+                @click="$emit('update-user', 'edit_profile')"
+            >Update Account</button>
         </div>
     </div>
 
@@ -93,10 +98,7 @@
 
     export default {
 
-        data() {
-            return {
-            };
-        },
+        props: ['processing'],
 
         components: {
             InputText,
