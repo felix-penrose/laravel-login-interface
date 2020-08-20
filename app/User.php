@@ -19,6 +19,7 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'password',
         'username',
         'personal_site',
         'location',
